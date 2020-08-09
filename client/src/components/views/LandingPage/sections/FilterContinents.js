@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
 import { Collapse, Checkbox } from 'antd';
-
+import { continents } from './Datas';
 const { Panel } = Collapse;
 
-const continents = [
-  { _id: 1, name: 'Afica' },
-  { _id: 2, name: 'Europe' },
-  { _id: 3, name: 'Asia' },
-  { _id: 4, name: 'North America' },
-  { _id: 5, name: 'South America' },
-  { _id: 6, name: 'Australia' },
-  { _id: 7, name: 'Antarctica' },
-];
-
-function CheckBox({ handleFilters }) {
+function FilterContinents({ handleFilters }) {
   const [checked, setChecked] = useState([]);
 
   const handleCheckBox = (value) => {
@@ -31,8 +21,9 @@ function CheckBox({ handleFilters }) {
   const renderCheckBoxList = () =>
     continents.map((value, index) => (
       <React.Fragment key={index}>
-        <Checkbox onChange={() => handleCheckBox(value._id)} />
-        <span>{value.name}</span>
+        <Checkbox onChange={() => handleCheckBox(value._id)}>
+          <span className="mr-4">{value.name}</span>
+        </Checkbox>
       </React.Fragment>
     ));
 
@@ -47,4 +38,4 @@ function CheckBox({ handleFilters }) {
   );
 }
 
-export default CheckBox;
+export default FilterContinents;

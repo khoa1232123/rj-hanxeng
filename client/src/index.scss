@@ -61,3 +61,12 @@ input.error {
     }
   }
 }
+
+.searchFeature {
+  position: relative;
+  i {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+  }
+}

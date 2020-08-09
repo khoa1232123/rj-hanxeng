@@ -3,13 +3,16 @@ import { FaCode } from 'react-icons/fa';
 import Axios from 'axios';
 import { Icon } from 'antd';
 import ImageSlider from '../../utils/ImageSlider';
-import CheckBox from './sections/CheckBox';
+import FilterContinents from './sections/FilterContinents';
+import FilterPrice from './sections/FilterPrice';
+import SearchFeature from './sections/SearchFeature';
 
 function LandingPage() {
   const [products, setProducts] = useState([]);
   const [skipLoadMore, setSkipLoadMore] = useState(0);
   const [limitLoadMore, setLimitLoadMore] = useState(4);
   const [postSize, setPostSize] = useState(0);
+  const [searchTerms, setSearchTerms] = useState('');
   const [filterlist, setFilterlist] = useState({
     continents: [],
     price: [],
@@ -78,13 +81,23 @@ function LandingPage() {
   };
 
   const handleFilters = (filters, category) => {
-    console.log(filters);
     const newFilters = { ...filterlist };
     newFilters[category] = filters;
-    if (category === 'price') {
-    }
+
     showFilteredResults(newFilters);
     setFilterlist(newFilters);
+  };
+
+  const updateSearchTerms = (newSearchTerm) => {
+    setSearchTerms(newSearchTerm);
+    setSkipLoadMore(0);
+    const variables = {
+      skip: skipLoadMore,
+      limit: limitLoadMore,
+      filters: filterlist,
+      searchTerm: newSearchTerm,
+    };
+    getProducts(variables);
   };
 
   return (
@@ -97,14 +110,17 @@ function LandingPage() {
         </div>
         <div className="row">
           <div className="col-6 mb-4">
-            <CheckBox
+            <FilterContinents
               handleFilters={(filters) => handleFilters(filters, 'continents')}
             />
           </div>
           <div className="col-6 mb-4">
-            <CheckBox
-              handleFilters={(filters) => handleFilters(filters, 'continents')}
+            <FilterPrice
+              handleFilters={(filters) => handleFilters(filters, 'price')}
             />
+          </div>
+          <div className="col-12 mb-4 d-flex justify-content-end">
+            <SearchFeature refreshFunction={updateSearchTerms} />
           </div>
           {products.length === 0 ? (
             <div className="col-12 mt-4">

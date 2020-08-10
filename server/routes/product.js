@@ -102,4 +102,19 @@ router.post('/getProducts', (req, res) => {
   }
 });
 
+router.get('/products_by_id', (req, res) => {
+  let productIds = req.query.id;
+  let type = req.query.type;
+
+  if (type === 'array') {
+  }
+
+  Product.find({ _id: { $in: productIds } })
+    .populate('writer')
+    .exec((err, product) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).send(product);
+    });
+});
+
 module.exports = router;

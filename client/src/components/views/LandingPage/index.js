@@ -6,6 +6,7 @@ import ImageSlider from '../../utils/ImageSlider';
 import FilterContinents from './sections/FilterContinents';
 import FilterPrice from './sections/FilterPrice';
 import SearchFeature from './sections/SearchFeature';
+import { Link } from 'react-router-dom';
 
 function LandingPage() {
   const [products, setProducts] = useState([]);
@@ -59,7 +60,9 @@ function LandingPage() {
         <div className="card mb-4">
           <ImageSlider images={product.images} />
           <div className="card-body">
-            <h5 className="card-title">{product.title}</h5>
+            <h5 className="card-title">
+              <Link to={`/product/${product._id}`}>{product.title}</Link>
+            </h5>
             <p className="card-text">{product.price}</p>
             <a href="#" className="btn btn-primary">
               Add to cart

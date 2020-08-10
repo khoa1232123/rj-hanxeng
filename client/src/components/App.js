@@ -8,6 +8,7 @@ import RegisterPage from './views/RegisterPage';
 import NavBar from './views/NavBar';
 import Footer from './views/Footer';
 import UploadProductPage from './views/UploadProductPage';
+import DetailProductPage from './views/DetailProductPage';
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -26,6 +27,11 @@ function App() {
             exact
             path="/product/upload"
             component={Auth(UploadProductPage, true)}
+          />
+          <Route
+            exact
+            path="/product/:productId"
+            component={Auth(DetailProductPage, null)}
           />
         </Switch>
       </div>

@@ -36,6 +36,9 @@ function RightMenu(props) {
         <Menu.Item key="upload">
           <Link to="/product/upload">Upload</Link>
         </Menu.Item>
+        <Menu.Item key="cart">
+          <Link to="/user/cart">Cart</Link>
+        </Menu.Item>
         <Menu.Item key="logout">
           <a onClick={logoutHandler}>Logout</a>
         </Menu.Item>

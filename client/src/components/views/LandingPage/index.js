@@ -56,7 +56,7 @@ function LandingPage() {
 
   const renderProducts = products.map((product, index) => {
     return (
-      <div key={`product-${index}`} className="col-12 col-md-3">
+      <div key={`product-${index}`} className="col-12 col-sm-6 col-md-3">
         <div className="card mb-4">
           <ImageSlider images={product.images} />
           <div className="card-body">

@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import ProductImages from './sections/ProductImages';
 import ProductInfo from './sections/ProductInfo';
+import { addToCart } from '../../../redux/actions/userActions';
+import { useDispatch } from 'react-redux';
 
 function DetailProductPage(props) {
+  const dispatch = useDispatch();
   const productId = props.match.params.productId;
 
   const [productDetail, setProductDetail] = useState([]);
@@ -17,6 +20,10 @@ function DetailProductPage(props) {
     );
   }, []);
 
+  const addToCartHandler = (productId) => {
+    dispatch(addToCart(productId));
+  };
+
   return (
     <div className="container">
       <div className="header mt-4 mb-4">
@@ -27,7 +34,7 @@ function DetailProductPage(props) {
           <ProductImages detail={productDetail} />
         </div>
         <div className="col-12 col-md-6">
-          <ProductInfo detail={productDetail} />
+          <ProductInfo addToCart={addToCartHandler} detail={productDetail} />
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ import UserCardBlock from './sections/UserCardBlock';
 import { Result, Empty } from 'antd';
 import Axios from 'axios';
 
-function CartPage({ user: { userData, cartDetail } }) {
+const CartPage = ({ user: { userData, cartDetail } }) => {
   const dispatch = useDispatch();
   const [totalCart, setTotalCart] = useState(0);
   const [showTotal, setShowTotal] = useState(false);
@@ -38,18 +38,25 @@ function CartPage({ user: { userData, cartDetail } }) {
     setShowTotal(true);
   };
 
+  // const removeFromCart = (productId) => {
+  //   console.log(productId);
+  //   dispatch(removeCartItem(productId)).then((res) => {
+  //     if (res.data.success) {
+  //       if (res.data.cartDetail.length <= 0) {
+  //         setShowTotal(false);
+  //       } else {
+  //         calculateTotal(res.data.cartDetail);
+  //       }
+  //     }
+  //   });
+  // };
   const removeFromCart = (productId) => {
-    console.log(productId);
-    dispatch(removeCartItem(productId)).then(() => {
-      Axios.get('/api/users/userCartInfo').then((res) => {
-        if (res.data.success) {
-          if (res.data.cartDetail.length <= 0) {
-            setShowTotal(false);
-          } else {
-            calculateTotal(res.data.cartDetail);
-          }
-        }
-      });
+    dispatch(removeCartItem(productId)).then((response) => {
+      if (response.payload.cartDetail.length <= 0) {
+        setShowTotal(false);
+      } else {
+        calculateTotal(response.payload.cartDetail);
+      }
     });
   };
 
@@ -77,6 +84,6 @@ function CartPage({ user: { userData, cartDetail } }) {
       </div>
     </div>
   );
-}
+};
 
 export default CartPage;

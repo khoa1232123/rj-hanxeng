@@ -38,7 +38,7 @@ function RightMenu(props) {
         </Menu.Item>
         <Menu.Item key="cart">
           <Link to="/user/cart">
-            <Badge count={1}>
+            <Badge count={user.userData && user.userData.cart.length}>
               <Icon
                 type="shopping-cart"
                 style={{ fontSize: 30, marginBottom: 4 }}

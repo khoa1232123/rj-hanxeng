@@ -9,6 +9,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.container-fluid,
+.container {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .row {
   margin-left: -10px;
   margin-right: -10px;

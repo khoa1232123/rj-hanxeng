@@ -14,9 +14,11 @@ import store from './redux/store';
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <React.Fragment>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </React.Fragment>
   </Provider>,
   document.getElementById('root')
 );

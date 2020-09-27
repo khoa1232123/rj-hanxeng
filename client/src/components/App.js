@@ -12,6 +12,7 @@ import DetailProductPage from './views/DetailProductPage';
 import CartPage from './views/CartPage';
 import MovieApp from './views/MovieApp';
 import MovieDetailPage from './views/MovieApp/MovieDetailPage';
+import FavoritePage from './views/MovieApp/FavoritePage';
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -26,11 +27,12 @@ function App() {
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
-          <Route exact path="/movie" component={Auth(MovieApp, false)} />
+          <Route exact path="/movie" component={Auth(MovieApp, null)} />
+          <Route exact path="/favorite" component={Auth(FavoritePage, null)} />
           <Route
             exact
             path="/movie/:movieId"
-            component={Auth(MovieDetailPage, false)}
+            component={Auth(MovieDetailPage, null)}
           />
           <Route
             exact

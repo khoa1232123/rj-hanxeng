@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { API_KEY, API_URL, IMAGE_URL } from '../../Config';
-import { Typography, Row } from 'antd';
 import './style.scss';
 import MainImage from './sections/MainImage';
-import Grid from 'antd/lib/card/Grid';
 import GridCard from './sections/GridCard';
+import { fetchMovieData } from '../../../redux/actions/movieActions';
+import { connect } from 'react-redux';
 
-const MovieApp = () => {
+const MovieApp = ({ fetchMovieData, movieList }) => {
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     fetchMovie();
   }, []);
 
   const fetchMovie = (page = 1) => {
-    const path = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-us&page=${page}`;
-    fetch(path)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        setMovies([...movies, ...res.results]);
-        setCurrentPage(res.page);
-      });
+    fetchMovieData(page);
+    setMovies([...movies, ...movieList]);
   };
 
   const handleClick = () => {
     const page = currentPage + 1;
     fetchMovie(page);
+    setCurrentPage(page);
   };
 
   return (
@@ -66,4 +62,15 @@ const MovieApp = () => {
   );
 };
 
-export default MovieApp;
+const mapStateToProps = (state) => {
+  console.log(state.movie);
+  return {
+    movieList: state.movie.movieList,
+  };
+};
+
+const mapDispatchToProps = {
+  fetchMovieData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieApp);

@@ -4,67 +4,67 @@ import MainImage from '../sections/MainImage';
 import { Descriptions } from 'antd';
 import GridCard from '../sections/GridCard';
 import FavoriteBtn from '../sections/FavoriteBtn';
+import {
+  fetchMovieDetail,
+  fetchMovieCast,
+} from '../../../../redux/actions/movieActions';
+import { connect } from 'react-redux';
 
-const MovieDetailPage = (props) => {
+const MovieDetailPage = ({
+  fetchMovieDetail,
+  fetchMovieCast,
+  movieDetail,
+  castList,
+  ...props
+}) => {
   const movieId = props.match.params.movieId;
-  const [movie, setMovie] = useState([]);
   const [actorToggle, setActorToggle] = useState(false);
-  const [casts, setCasts] = useState([]);
   useEffect(() => {
-    const path = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-us`;
-    fetch(path)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        setMovie(res);
-        fetch(`${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`)
-          .then((res) => res.json())
-          .then((res) => {
-            console.log(res);
-            setCasts(res.cast);
-          });
-      });
-  }, []);
+    fetchMovieDetail(movieId);
+    fetchMovieCast(movieId);
+  }, [fetchMovieDetail, fetchMovieCast]);
 
   const handleClick = () => {
     setActorToggle(!actorToggle);
   };
-  if (movie.id) {
+  if (movieDetail.id) {
     return (
       <div className="container-fluid">
-        {movie.backdrop_path && (
+        {movieDetail.backdrop_path && (
           <MainImage
             image={`${IMAGE_URL}w1280${
-              movie.backdrop_path && movie.backdrop_path
+              movieDetail.backdrop_path && movieDetail.backdrop_path
             }`}
-            title={movie.original_title}
-            text={movie.overview}
+            title={movieDetail.original_title}
+            text={movieDetail.overview}
           />
         )}
         <div className="container">
           <FavoriteBtn
             userFrom={localStorage.getItem('userId')}
-            movieInfo={movie}
+            movieInfo={movieDetail}
           />
           <Descriptions title="more info" bordered>
             <Descriptions.Item label="Title">
-              {movie.original_title}
+              {movieDetail.original_title}
             </Descriptions.Item>
             <Descriptions.Item label="Release date">
-              {movie.release_date}
+              {movieDetail.release_date}
             </Descriptions.Item>
             <Descriptions.Item label="Revenue">
-              {movie.revenue}
+              {movieDetail.revenue}
             </Descriptions.Item>
             <Descriptions.Item label="vote_average" span={2}>
-              {movie.vote_average}
+              {movieDetail.vote_average}
             </Descriptions.Item>
             <Descriptions.Item label="vote_count">
-              {movie.vote_count}
+              {movieDetail.vote_count}
             </Descriptions.Item>
-            <Descriptions.Item label="status">{movie.status}</Descriptions.Item>
+            <Descriptions.Item label="status">
+              {movieDetail.status}
+            </Descriptions.Item>
             <Descriptions.Item label="popularity">
-              {movie.popularity}
+              {movieDetail.popularity}
             </Descriptions.Item>
           </Descriptions>
           <div className="buttonActorView mt-4">
@@ -74,8 +74,8 @@ const MovieDetailPage = (props) => {
           </div>
           {actorToggle && (
             <div className="row mt-4">
-              {casts &&
-                casts.map((cast, index) => (
+              {castList &&
+                castList.map((cast, index) => (
                   <GridCard
                     key={index}
                     actor
@@ -96,4 +96,17 @@ const MovieDetailPage = (props) => {
   }
 };
 
-export default MovieDetailPage;
+const mapStateToProps = (state) => {
+  console.log(state.movie);
+  return {
+    movieDetail: state.movie.movieDetail,
+    castList: state.movie.castList,
+  };
+};
+
+const mapDispatchToProps = {
+  fetchMovieDetail,
+  fetchMovieCast,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieDetailPage);

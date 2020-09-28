@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { Popover } from 'antd';
 import { IMAGE_URL } from '../../../Config';
+import { getFavorite } from '../../../../redux/actions/favoriteActions';
+import { connect } from 'react-redux';
 
-const FavoritePage = () => {
+const FavoritePage = ({ getFavorite, favoriteList }) => {
   const variables = { userFrom: localStorage.getItem('userId') };
   const [favorites, setFavorites] = useState([]);
   useEffect(() => {
-    fetchFavorite();
-  }, []);
+    getFavorite();
+  }, [getFavorite]);
 
   const fetchFavorite = () => {
     Axios.post('/api/favorite/getFavorite', variables).then((res) => {
@@ -34,33 +36,35 @@ const FavoritePage = () => {
     });
   };
 
-  const renderTableBody = favorites.map((favorite, index) => {
-    const content = (
-      <div>
-        {favorite.movieImage ? (
-          <img src={`${IMAGE_URL}w500${favorite.movieImage}`} alt="image" />
-        ) : (
-          'no Image'
-        )}
-      </div>
-    );
-    return (
-      <tr key={index}>
-        <Popover title={favorite.movieTitle} content={content}>
-          <td>{favorite.movieTitle}</td>
-        </Popover>
-        <td>{favorite.movieRunTime} min</td>
-        <td>
-          <button
-            onClick={() => handleClick(favorite.movieId)}
-            className="btn btn-danger btn-sm"
-          >
-            Remove
-          </button>
-        </td>
-      </tr>
-    );
-  });
+  const renderTableBody =
+    favoriteList &&
+    favoriteList.map((favorite, index) => {
+      const content = (
+        <div>
+          {favorite.movieImage ? (
+            <img src={`${IMAGE_URL}w500${favorite.movieImage}`} alt="image" />
+          ) : (
+            'no Image'
+          )}
+        </div>
+      );
+      return (
+        <tr key={index}>
+          <Popover title={favorite.movieTitle} content={content}>
+            <td>{favorite.movieTitle}</td>
+          </Popover>
+          <td>{favorite.movieRunTime} min</td>
+          <td>
+            <button
+              onClick={() => handleClick(favorite.movieId)}
+              className="btn btn-danger btn-sm"
+            >
+              Remove
+            </button>
+          </td>
+        </tr>
+      );
+    });
 
   return (
     <div className="container mt-5">
@@ -80,4 +84,15 @@ const FavoritePage = () => {
   );
 };
 
-export default FavoritePage;
+const mapStateToProps = (state) => {
+  console.log(state.favorite);
+  return {
+    favoriteList: state.favorite.favoriteList,
+  };
+};
+
+const mapDispatchToProps = {
+  getFavorite,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FavoritePage);

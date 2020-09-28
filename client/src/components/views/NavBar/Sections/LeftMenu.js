@@ -10,7 +10,7 @@ function LeftMenu(props) {
       <Menu.Item key="home">
         <Link to="/">Home</Link>
       </Menu.Item>
-      <SubMenu title={<Link to="/movie">Movie App</Link>}>
+      <SubMenu key="movie" title={<Link to="/movie">Movie App</Link>}>
         <Menu.Item key="setting:1">
           <Link to="/favorite">Favorite</Link>
         </Menu.Item>

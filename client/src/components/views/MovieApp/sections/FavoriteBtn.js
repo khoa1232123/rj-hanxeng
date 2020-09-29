@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
+import {
+  getFavorite,
+  removeFavorite,
+  getFavoriteNumber,
+} from '../../../../redux/actions/favoriteActions';
+import { connect } from 'react-redux';
 
-const FavoriteBtn = ({ userFrom, movieInfo }) => {
+const FavoriteBtn = ({ userFrom, movieInfo, getFavoriteNumber }) => {
   const [favoriteNumber, setFavoriteNumber] = useState(0);
   const [favorited, setFavorited] = useState(false);
   const variable = {
@@ -13,22 +19,23 @@ const FavoriteBtn = ({ userFrom, movieInfo }) => {
   };
   useEffect(() => {
     console.log(movieInfo);
-    Axios.post('/api/favorite/favoriteNumber', variable).then((res) => {
-      if (res.data.success) {
-        setFavoriteNumber(res.data.favoriteNumber);
-      } else {
-        alert('failed to get favoriteNumber');
-      }
-    });
-    Axios.post('/api/favorite/favorited', variable).then((res) => {
-      if (res.data.success) {
-        setFavorited(res.data.favorited);
-        console.log(res.data);
-      } else {
-        alert('failed to get favorite info');
-      }
-    });
-  }, [setFavoriteNumber, setFavorited]);
+    // Axios.post('/api/favorite/favoriteNumber', variable).then((res) => {
+    //   if (res.data.success) {
+    //     setFavoriteNumber(res.data.favoriteNumber);
+    //   } else {
+    //     alert('failed to get favoriteNumber');
+    //   }
+    // });
+    // Axios.post('/api/favorite/favorited', variable).then((res) => {
+    //   if (res.data.success) {
+    //     setFavorited(res.data.favorited);
+    //     console.log(res.data);
+    //   } else {
+    //     alert('failed to get favorite info');
+    //   }
+    // });
+    getFavoriteNumber(movieInfo);
+  }, [setFavoriteNumber, setFavorited, getFavoriteNumber]);
 
   const handleClick = () => {
     if (favorited) {
@@ -62,4 +69,17 @@ const FavoriteBtn = ({ userFrom, movieInfo }) => {
   );
 };
 
-export default FavoriteBtn;
+const mapStateToProps = (state) => {
+  console.log(state.favorite);
+  return {
+    favoriteNumber: state.favorite.favoriteNumber,
+  };
+};
+
+const mapDispatchToProps = {
+  getFavorite,
+  getFavoriteNumber,
+  removeFavorite,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FavoriteBtn);

@@ -2,38 +2,21 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { Popover } from 'antd';
 import { IMAGE_URL } from '../../../Config';
-import { getFavorite } from '../../../../redux/actions/favoriteActions';
+import {
+  getFavorite,
+  removeFavorite,
+} from '../../../../redux/actions/favoriteActions';
 import { connect } from 'react-redux';
 
-const FavoritePage = ({ getFavorite, favoriteList }) => {
+const FavoritePage = ({ getFavorite, removeFavorite, favoriteList }) => {
   const variables = { userFrom: localStorage.getItem('userId') };
   const [favorites, setFavorites] = useState([]);
   useEffect(() => {
     getFavorite();
   }, [getFavorite]);
 
-  const fetchFavorite = () => {
-    Axios.post('/api/favorite/getFavorite', variables).then((res) => {
-      if (res.data.success) {
-        setFavorites(res.data.favorites);
-      } else {
-        alert('failed to get favorite');
-      }
-    });
-  };
-
   const handleClick = (movieId) => {
-    const variable = {
-      movieId,
-      userFrom: localStorage.getItem('userId'),
-    };
-    Axios.post('/api/favorite/removeFromFavorite', variable).then((res) => {
-      if (res.data.success) {
-        fetchFavorite();
-      } else {
-        alert('faild remove from favorite');
-      }
-    });
+    removeFavorite(movieId);
   };
 
   const renderTableBody =
@@ -93,6 +76,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   getFavorite,
+  removeFavorite,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavoritePage);

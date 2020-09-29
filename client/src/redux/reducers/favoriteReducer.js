@@ -1,7 +1,12 @@
-import { GET_FAVORITE_LIST } from '../types';
+import {
+  GET_FAVORITE_LIST,
+  REMOVE_FAVORITE,
+  GET_FAVORITE_NUMBER,
+} from '../types';
 
 const initState = {
   favoriteList: [],
+  favoriteNumber: 0,
 };
 
 export default function (state = initState, action) {
@@ -10,6 +15,15 @@ export default function (state = initState, action) {
       return {
         ...state,
         favoriteList: action.payload,
+      };
+    case REMOVE_FAVORITE:
+      return {
+        ...state,
+      };
+    case GET_FAVORITE_NUMBER:
+      return {
+        ...state,
+        favoriteNumber: action.payload,
       };
     default:
       return state;

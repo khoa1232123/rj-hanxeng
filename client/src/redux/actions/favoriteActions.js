@@ -1,5 +1,14 @@
 import Axios from 'axios';
 import {
+  fetchFavoriteData,
+  removeFevoriteData,
+  addFevoriteData,
+  getFevoriteNumberData,
+  getFevoritedData,
+} from '../../api/favorite';
+import {
+  ADD_FAVORITE,
+  GET_FAVORITED,
   GET_FAVORITE_LIST,
   GET_FAVORITE_NUMBER,
   REMOVE_FAVORITE,
@@ -7,44 +16,69 @@ import {
 
 export function getFavorite() {
   return async (dispatch) => {
-    const variables = { userFrom: localStorage.getItem('userId') };
-    const request = await Axios.post('/api/favorite/getFavorite', variables);
-    console.log(request);
+    const { favorites } = await fetchFavoriteData();
     dispatch({
       type: GET_FAVORITE_LIST,
-      payload: request.data.favorites,
+      payload: favorites,
     });
   };
 }
 
-export function removeFavorite(movieId) {
-  return async (dispatch) => {
-    const variable = { movieId, userFrom: localStorage.getItem('userId') };
-    const request = await Axios.post(
-      '/api/favorite/removeFromFavorite',
-      variable
+export const removeFavorite = (movieId) => {
+  return async (dispatch, getState) => {
+    await removeFevoriteData(movieId);
+    const {
+      favorite: { favoriteList, favoriteNumber, favorited },
+    } = await getState();
+    const newFavoriteList = favoriteList.filter(
+      (item) =>
+        item.movieId !== movieId &&
+        item.userFrom === localStorage.getItem('userId')
     );
-    console.log(request);
+    const newFavoriteNumber = favoriteNumber - 1;
+    const newFavorited = !favorited;
     dispatch({
       type: REMOVE_FAVORITE,
+      payload: { newFavoriteList, newFavoriteNumber, newFavorited },
     });
   };
-}
+};
+
+export const addFavorite = (movieInfo) => {
+  return async (dispatch, getState) => {
+    await addFevoriteData(movieInfo);
+    const {
+      favorite: { favoriteNumber, favorited },
+    } = await getState();
+    console.log(favoriteNumber);
+    console.log(favorited);
+
+    const newFavoriteNumber = favoriteNumber + 1;
+    const newFavorited = !favorited;
+
+    dispatch({
+      type: ADD_FAVORITE,
+      payload: { newFavoriteNumber, newFavorited },
+    });
+  };
+};
 
 export function getFavoriteNumber(movieInfo) {
   return async (dispatch) => {
-    const variable = {
-      userFrom: localStorage.getItem('userId'),
-      movieId: movieInfo.id,
-      movieTitle: movieInfo.original_title,
-      movieImage: movieInfo.poster_path,
-      movieRunTime: movieInfo.runtime,
-    };
-    const request = await Axios.post('/api/favorite/favoriteNumber', variable);
-    console.log(request);
+    const { favoriteNumber } = await getFevoriteNumberData(movieInfo);
     dispatch({
       type: GET_FAVORITE_NUMBER,
-      payload: request.data.favoriteNumber,
+      payload: favoriteNumber,
+    });
+  };
+}
+
+export function getFavorited(movieInfo) {
+  return async (dispatch) => {
+    const { favorited } = await getFevoritedData(movieInfo);
+    dispatch({
+      type: GET_FAVORITED,
+      payload: favorited,
     });
   };
 }

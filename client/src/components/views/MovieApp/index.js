@@ -3,19 +3,19 @@ import { API_KEY, API_URL, IMAGE_URL } from '../../Config';
 import './style.scss';
 import MainImage from './sections/MainImage';
 import GridCard from './sections/GridCard';
-import { fetchMovieData } from '../../../redux/actions/movieActions';
+import { fetchMovie } from '../../../redux/actions/movieActions';
 import { connect } from 'react-redux';
 
-const MovieApp = ({ fetchMovieData, movieList }) => {
+const MovieApp = ({ fetchMovie, movieList }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetchMovieData();
-  }, [fetchMovieData]);
+    fetchMovie();
+  }, [fetchMovie]);
 
   const handleClick = () => {
     const page = currentPage + 1;
-    fetchMovieData(page);
+    fetchMovie(page);
     setCurrentPage(page);
   };
 
@@ -61,7 +61,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  fetchMovieData,
+  fetchMovie,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieApp);

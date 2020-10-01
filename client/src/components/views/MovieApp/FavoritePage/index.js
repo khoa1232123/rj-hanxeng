@@ -9,8 +9,6 @@ import {
 import { connect } from 'react-redux';
 
 const FavoritePage = ({ getFavorite, removeFavorite, favoriteList }) => {
-  const variables = { userFrom: localStorage.getItem('userId') };
-  const [favorites, setFavorites] = useState([]);
   useEffect(() => {
     getFavorite();
   }, [getFavorite]);

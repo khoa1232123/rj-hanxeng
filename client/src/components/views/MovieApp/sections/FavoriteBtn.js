@@ -4,60 +4,33 @@ import {
   getFavorite,
   removeFavorite,
   getFavoriteNumber,
+  getFavorited,
+  addFavorite,
 } from '../../../../redux/actions/favoriteActions';
 import { connect } from 'react-redux';
 
-const FavoriteBtn = ({ userFrom, movieInfo, getFavoriteNumber }) => {
-  const [favoriteNumber, setFavoriteNumber] = useState(0);
-  const [favorited, setFavorited] = useState(false);
-  const variable = {
-    userFrom,
-    movieId: movieInfo.id,
-    movieTitle: movieInfo.original_title,
-    movieImage: movieInfo.poster_path,
-    movieRunTime: movieInfo.runtime,
-  };
+const FavoriteBtn = ({
+  movieInfo,
+  getFavoriteNumber,
+  favoriteNumber,
+  getFavorited,
+  favorited,
+  addFavorite,
+  removeFavorite,
+}) => {
   useEffect(() => {
-    console.log(movieInfo);
-    // Axios.post('/api/favorite/favoriteNumber', variable).then((res) => {
-    //   if (res.data.success) {
-    //     setFavoriteNumber(res.data.favoriteNumber);
-    //   } else {
-    //     alert('failed to get favoriteNumber');
-    //   }
-    // });
-    // Axios.post('/api/favorite/favorited', variable).then((res) => {
-    //   if (res.data.success) {
-    //     setFavorited(res.data.favorited);
-    //     console.log(res.data);
-    //   } else {
-    //     alert('failed to get favorite info');
-    //   }
-    // });
     getFavoriteNumber(movieInfo);
-  }, [setFavoriteNumber, setFavorited, getFavoriteNumber]);
+    getFavorited(movieInfo);
+  }, [getFavoriteNumber, getFavorited]);
 
   const handleClick = () => {
     if (favorited) {
-      Axios.post('/api/favorite/removeFromFavorite', variable).then((res) => {
-        if (res.data.success) {
-          setFavoriteNumber(favoriteNumber - 1);
-          setFavorited(!favorited);
-        } else {
-          alert('faild remove from favorite');
-        }
-      });
+      removeFavorite(movieInfo.id);
     } else {
-      Axios.post('/api/favorite/addToFavorite', variable).then((res) => {
-        if (res.data.success) {
-          setFavoriteNumber(favoriteNumber + 1);
-          setFavorited(!favorited);
-        } else {
-          alert('faild add to favorite');
-        }
-      });
+      addFavorite(movieInfo);
     }
   };
+  console.log(favoriteNumber);
 
   return (
     <div className="buttonFavorite mt-4">
@@ -70,9 +43,9 @@ const FavoriteBtn = ({ userFrom, movieInfo, getFavoriteNumber }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state.favorite);
   return {
     favoriteNumber: state.favorite.favoriteNumber,
+    favorited: state.favorite.favorited,
   };
 };
 
@@ -80,6 +53,8 @@ const mapDispatchToProps = {
   getFavorite,
   getFavoriteNumber,
   removeFavorite,
+  getFavorited,
+  addFavorite,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavoriteBtn);

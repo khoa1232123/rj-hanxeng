@@ -27,6 +27,7 @@ const MovieDetailPage = ({
   const handleClick = () => {
     setActorToggle(!actorToggle);
   };
+  console.log(movieDetail);
   if (movieDetail.id) {
     return (
       <div className="container-fluid">
@@ -97,7 +98,6 @@ const MovieDetailPage = ({
 };
 
 const mapStateToProps = (state) => {
-  console.log(state.movie);
   return {
     movieDetail: state.movie.movieDetail,
     castList: state.movie.castList,

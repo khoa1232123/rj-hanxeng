@@ -15,7 +15,8 @@ export default function (state = initState, action) {
     case FETCH_MOVIE_DATA:
       return {
         ...state,
-        movieList: [...state.movieList, ...action.payload.results],
+        movieList: action.payload,
+        movieDetail: {},
       };
     case FETCH_MOVIE_DETAIL:
       return {

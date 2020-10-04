@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_KEY, API_URL, IMAGE_URL } from '../../Config';
+import { IMAGE_URL } from '../../Config';
 import './style.scss';
 import MainImage from './sections/MainImage';
 import GridCard from './sections/GridCard';

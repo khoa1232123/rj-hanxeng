@@ -13,6 +13,8 @@ import CartPage from './views/CartPage';
 import MovieApp from './views/MovieApp';
 import MovieDetailPage from './views/MovieApp/MovieDetailPage';
 import FavoritePage from './views/MovieApp/FavoritePage';
+import UploadVideoPage from './views/YoutubePage/UploadVideoPage';
+import YoutubePage from './views/YoutubePage';
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -45,6 +47,12 @@ function App() {
             component={Auth(DetailProductPage, null)}
           />
           <Route exact path="/user/cart" component={Auth(CartPage, true)} />
+          <Route exact path="/youtube" component={Auth(YoutubePage, null)} />
+          <Route
+            exact
+            path="/uploadvideo"
+            component={Auth(UploadVideoPage, true)}
+          />
         </Switch>
       </div>
       <Footer />

@@ -6,7 +6,6 @@ import {
 } from '../../../redux/actions/userActions';
 import UserCardBlock from './sections/UserCardBlock';
 import { Result, Empty } from 'antd';
-import Axios from 'axios';
 
 const CartPage = ({ user: { userData, cartDetail } }) => {
   const dispatch = useDispatch();

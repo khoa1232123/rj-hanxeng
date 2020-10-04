@@ -1,4 +1,3 @@
-import Axios from 'axios';
 import { API_KEY, API_URL } from '../components/Config';
 
 export const fetchMovieData = async (page) => {

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Axios from 'axios';
+import React, { useEffect } from 'react';
 import {
   getFavorite,
   removeFavorite,

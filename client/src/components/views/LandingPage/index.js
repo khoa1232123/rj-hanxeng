@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaCode } from 'react-icons/fa';
+// import { FaCode } from 'react-icons/fa';
 import Axios from 'axios';
 import { Icon } from 'antd';
 import ImageSlider from '../../utils/ImageSlider';
